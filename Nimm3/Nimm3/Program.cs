@@ -226,9 +226,9 @@ string menu(string method)
 
         switch (Console.ReadLine()?.ToLower().Replace(" ", ""))
         {
-            case "1vs1": break;
-            case "level1": Game(); break;
-            case "level2": Game(); break;
+            case "1vs1": Game(); break;
+            case "level1": Console.Clear(); Console.WriteLine("Coming soon!"); Thread.Sleep(2000); menu("startscreen"); break;
+            case "level2": Console.Clear(); Console.WriteLine("Coming soon!"); Thread.Sleep(2000); menu("startscreen"); break;
             case "spielregeln": Rules(); break;
         }
         return "";
