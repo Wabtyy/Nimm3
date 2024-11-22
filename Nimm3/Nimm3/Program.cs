@@ -65,7 +65,7 @@ void DrawPyramid(int rows, string deckenboden)
          
         for (int i = 0; i < pyramidState[row].Count; i++)
         {
-            Thread.Sleep(row * 4);
+            //Thread.Sleep(row * 4);
             Console.Write(pyramidState[row][i] ? " ! " : "   "); // "!" oder Leerzeichen 
         }
 
