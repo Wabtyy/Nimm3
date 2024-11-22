@@ -1,94 +1,205 @@
-﻿menu("startscreen");
+﻿using System.Windows;
+
+bool spieler = true;
+int bodendecke = 0;
+int moves = 0;
+int rows = 0;
+
+List<List<bool>> pyramidState=null;
+menu("startscreen");
 
 void Game()
 {
-    int rows = int.Parse(menu("rows"));
+    rows = int.Parse(menu("rows"));
     Console.Clear();
 
-    int stäbchen = -1, // Damit in der ersten Reihe einer und in der dritten 3 gesetzt werden
-        spaces = rows,
-        bodendecke = spaces * 6 - 2, // Frag mich einfach nicht, was die Rechnung bewirkt, aber es klappt :)
-        Animation = 25;
+    int spaces = rows;
+    bodendecke = spaces * 6 - 2;
 
     string deckenboden = new string('═', bodendecke + 1);
 
     Console.ForegroundColor = ConsoleColor.Magenta;
 
-    int originalRows = rows; // Speichern der ursprünglichen Reihenanzahl
+    pyramidState = new List<List<bool>>();
 
-    while (rows > 0)
+    //pyramide aufbauen
+    for (int r = 1; r <= rows; r++)
+    {
+        pyramidState.Add(new List<bool>());
+        for (int i = 0; i < r * 2 - 1; i++)
+        {
+            pyramidState[r - 1].Add(true); // Alle Positionen aktivieren
+        }
+    }
+
+    while (true)
+    {
+        DrawPyramid(rows, deckenboden);
+        RemoveStick();
+        Check4Win();
+    }
+}
+
+void DrawPyramid(int rows, string deckenboden)
+{
+    Console.Clear();
+    int spaces = rows;
+
+    Console.ForegroundColor = ConsoleColor.Magenta;
+    Console.Write("\n   ╔═══╦" + deckenboden + "╗");
+
+    for (int row = 0; row < pyramidState.Count; row++)
     {
         spaces--;
-        stäbchen += 2;
-        rows--;
-
-        if (stäbchen == 1) Console.WriteLine("   ╔═══╦" + deckenboden + "╗");
-        else Console.WriteLine("");
-
-        // Zeilennummer links anzeigen
+        Console.Write("\n");
         Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.Write("   ║"); 
+        Console.Write("   ║");
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.Write($"{originalRows - rows,2} "); // Zeilennummer rechtsbündig mit 3 Stellen
+
+        Console.Write($"{row + 1,2} ");
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write("║");
         Console.ForegroundColor = ConsoleColor.Yellow;
 
-        Console.Write(new string(' ', spaces * 3 + 1)); // Füllt links von den "!" alles mit Leerzeichen, so dass die "║" in einer Reihe sind.
-
-        for (int i = 0; i < stäbchen; i++)
+        Console.Write(new string(' ', spaces * 3 + 1)); // Leerzeichen links
+         
+        for (int i = 0; i < pyramidState[row].Count; i++)
         {
-            Console.Write(" ! ");
-            Thread.Sleep(stäbchen);
+            Thread.Sleep(row * 4);
+            Console.Write(pyramidState[row][i] ? " ! " : "   "); // "!" oder Leerzeichen 
         }
 
         Console.ForegroundColor = ConsoleColor.Magenta;
-
-        Console.Write(new string(' ', spaces * 3)); // Füllt rechts von den "!" alles mit Leerzeichen, so dass die "║" in einer Reihe sind.
-
+        Console.Write(new string(' ', spaces * 3)); // Leerzeichen rechts
         Console.Write(" ║");
     }
 
     Console.WriteLine("\n   ╚═══╬" + deckenboden + "╣");
 
-    // Koordinaten unter der Pyramide anzeigen
-    int koordinatenBreite = bodendecke / 6; // Breite der Koordinaten
-
-    Console.Write("      "); // Abstände für Ausrichtung
+    // Koordinaten anzeigen
+    Console.Write("      ");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write(" ║");
+
     Console.ForegroundColor = ConsoleColor.Yellow;
-    for (int i = -koordinatenBreite; i <= koordinatenBreite; i++)
+    for (int col = 1; col <= pyramidState[^1].Count; col++) //zählt die stäbchen in der letzen reihe
     {
-        if (i < 0)
-        {
-            Console.Write($"{i,3}"); // Negative Zahlen mit drei Stellen
-        }
-        else
-        {
-            Console.Write($"{i,3}"); // Positive Zahlen mit drei Stellen
-        }
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.Write($"{col,3}");
+        Console.ForegroundColor = ConsoleColor.Yellow;
     }
+
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write("  ║");
-    Console.WriteLine("\n       ╚" + deckenboden + "╝");
-    Console.ResetColor();
-    Console.WriteLine();
-    Console.SetCursorPosition(35, Console.CursorTop - 3);
-    Console.ReadLine();
-
-
-    //int cursorLeft = Console.CursorLeft;
-    //int cursorTop = Console.CursorTop;
-    //Console.WriteLine(cursorLeft + cursorTop);
+    Console.WriteLine("\n       ╚" + deckenboden.Substring(0, deckenboden.Length / 2) + "╦" + deckenboden.Substring(0, deckenboden.Length / 2) + "╝");
 
 }
 
-string menu(string method)
+void RemoveStick()
 {
+
+
+    if (moves != 0)
+    {
+
+
+
+        menu("coords");
+        string[] split = Console.ReadLine().Split("-");
+
+        //if (!split.Contains("-"))
+        //{
+        //    Console.ForegroundColor = ConsoleColor.Red;
+        //    Console.WriteLine("Ungültige Eingabe! Stellen Sie sicher, dass die Eingabe ein \"-\" enthält (z.B. 1-5).");
+        //    Thread.Sleep(4000);
+        //    return;
+        // }
+
+        int.TryParse(split[0], out int selectedRow); selectedRow -= 1;
+        int.TryParse(split[1], out int globalColumn); globalColumn -= 1;
+
+
+        int rowStartColumn = pyramidState.Count - 1 - selectedRow; // Startposition der Zeile im globalen Koordinatensystem
+        int rowEndColumn = rowStartColumn + pyramidState[selectedRow].Count - 1;
+
+        int localColumn = globalColumn - rowStartColumn;
+        try
+        {
+            if (!pyramidState[selectedRow][localColumn])
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Clear();
+                Console.WriteLine($"Diese Position (Zeile {globalColumn}, Spalte {selectedRow}) ist bereits leer!");
+                Thread.Sleep(2000);
+                return;
+            }
+        }
+        catch
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Clear();
+            Console.WriteLine("Ungültige Eingabe.");
+            Thread.Sleep(2000);
+            return;
+        }
+
+        pyramidState[selectedRow][localColumn] = false;
+    }
+    else
+    {
+        if(spieler)
+        {
+            
+            Console.WriteLine(new string(' ', bodendecke-4) + "Spieler 1");
+            spieler = false;
+            menu("moves");
+        }
+        else
+        {
+            Console.WriteLine(new string(' ', bodendecke-4) + "Spieler 2");
+            spieler = true;
+            menu("moves");
+        }
+    
+    }
+    moves--;
+}
+
+void Check4Win()
+{
+    foreach (var row in pyramidState)
+    {
+        if (row.Contains(true))
+        {
+            return;
+        }
+    }
     Console.Clear();
+    if (spieler)
+    {
+        Console.WriteLine("Spieler 2 hat gewonnen!");
+    }
+    else
+    {
+        Console.WriteLine("Spieler 1 hat gewonnen!");
+    }
+    Console.ReadLine();
+}
+
+
+
+
+
+
+
+
+
+string menu(string method)
+    {
+
     if (method == "startscreen")
     {
+        Console.Clear();
         logo();
         Console.WriteLine("           ╔════════════╩══════════════╗");
         Console.WriteLine("  ╔══════════════════╗                 ║");
@@ -124,6 +235,7 @@ string menu(string method)
     }
     else if (method == "rows")
     {
+        Console.Clear();
         while (true)
         {
             Console.Clear();
@@ -137,54 +249,115 @@ string menu(string method)
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.SetCursorPosition(25, Console.CursorTop - 1);
             int abc = int.Parse(Console.ReadLine());
-            if (abc > 2 && abc < 10) return abc.ToString();
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Rows cannot be less than 3, or greater than 9");
-            Thread.Sleep(2500);
-            Console.ForegroundColor = ConsoleColor.Magenta;
+            if (abc > 2 && abc < 10)
+            {
+                return abc.ToString();
+            }
+            else
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Rows cannot be less than 3, or greater than 9");
+                Thread.Sleep(2500);
+                Console.ForegroundColor = ConsoleColor.Magenta;
+            }
+
         }
     }
-    return "";
-}
+    else if (method == "coords")
+    {
+        string deckenboden = new string('═', bodendecke + 1);
+        DrawPyramid(rows, deckenboden);
+
+
+
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.Write(new string(' ', deckenboden.Length / 2) + "╔═══════╩═══════╗\n" + new string(' ', deckenboden.Length / 2) + "║ ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write("Select coords ");
+
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.Write("║\n" + new string(' ', deckenboden.Length / 2) + "╚═══════╦═══════╝\n   ");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.Write(new string(' ', deckenboden.Length / 2) + "╔════╩════╗\n  " + new string(' ', deckenboden.Length / 2) + " ╠═► ");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.Write("      ║\n" + new string(' ', deckenboden.Length / 2 + 3) + "╚═════════╝\n   ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.SetCursorPosition(deckenboden.Length / 2 + 7, Console.CursorTop - 2);
+        Console.ForegroundColor = ConsoleColor.Yellow;
+    }
+    else if(method == "moves")
+    { 
+        string deckenboden = new string('═', bodendecke + 1);
+
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.Write(new string(' ', deckenboden.Length / 2-1) + "╔════════╩════════╗\n" + new string(' ', deckenboden.Length / 2-1) + "║ ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write("Number of Moves ");
+
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.Write("║\n" + new string(' ', deckenboden.Length / 2-1) + "╚════════╦════════╝\n   ");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.Write(new string(' ', deckenboden.Length / 2+2) + "╔══╩══╗\n  " + new string(' ', deckenboden.Length / 2+2) + " ╠► ");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.Write("   ║\n" + new string(' ', deckenboden.Length / 2 + 5) + "╚═════╝\n   ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.SetCursorPosition(deckenboden.Length / 2 + 8, Console.CursorTop - 2);
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        int outp= int.Parse(Console.ReadLine());
+        if (outp>3||outp<1)
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Die ausgewählte zahl darf nicht größer als 3, oder kleiner als 1 sein!");
+            Thread.Sleep(2500);
+        }
+        else
+        {
+            moves = outp+1;
+            Console.Clear();
+        }
+    }
+        return "";
+    }
 
 void logo()
-{
-    Console.ForegroundColor = ConsoleColor.Magenta;
-    Console.WriteLine("╔════════════════════════════════════════════════╗");
-    Console.Write("║ ");
-    Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write("███╗  ██╗██╗███╗   ███╗███╗   ███╗    ██████╗ ");
-    Console.ForegroundColor = ConsoleColor.Magenta;
-    Console.WriteLine(" ║");
-    Console.Write("║ ");
-    Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write("████╗ ██║██║████╗ ████║████╗ ████║    ╚════██╗");
-    Console.ForegroundColor = ConsoleColor.Magenta;
-    Console.WriteLine(" ║");
-    Console.Write("║ ");
-    Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write("██╔██╗██║██║██╔████╔██║██╔████╔██║     █████╔╝");
-    Console.ForegroundColor = ConsoleColor.Magenta;
-    Console.WriteLine(" ║");
-    Console.Write("║ ");
-    Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write("██║╚████║██║██║╚██╔╝██║██║╚██╔╝██║     ╚═══██╗");
-    Console.ForegroundColor = ConsoleColor.Magenta;
-    Console.WriteLine(" ║");
-    Console.Write("║ ");
-    Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write("██║ ╚███║██║██║ ╚═╝ ██║██║ ╚═╝ ██║    ██████╔╝");
-    Console.ForegroundColor = ConsoleColor.Magenta;
-    Console.WriteLine(" ║");
-    Console.Write("║ ");
-    Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write("╚═╝  ╚══╝╚═╝╚═╝     ╚═╝╚═╝     ╚═╝    ╚═════╝ ");
-    Console.ForegroundColor = ConsoleColor.Magenta;
-    Console.WriteLine(" ║");
-    Console.WriteLine("╚═══════════════════════╦════════════════════════╝");
-    Console.WriteLine("                        ║");
-}
+    {
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("╔════════════════════════════════════════════════╗");
+        Console.Write("║ ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write("███╗  ██╗██╗███╗   ███╗███╗   ███╗    ██████╗ ");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine(" ║");
+        Console.Write("║ ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write("████╗ ██║██║████╗ ████║████╗ ████║    ╚════██╗");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine(" ║");
+        Console.Write("║ ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write("██╔██╗██║██║██╔████╔██║██╔████╔██║     █████╔╝");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine(" ║");
+        Console.Write("║ ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write("██║╚████║██║██║╚██╔╝██║██║╚██╔╝██║     ╚═══██╗");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine(" ║");
+        Console.Write("║ ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write("██║ ╚███║██║██║ ╚═╝ ██║██║ ╚═╝ ██║    ██████╔╝");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine(" ║");
+        Console.Write("║ ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write("╚═╝  ╚══╝╚═╝╚═╝     ╚═╝╚═╝     ╚═╝    ╚═════╝ ");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine(" ║");
+        Console.WriteLine("╚═══════════════════════╦════════════════════════╝");
+        Console.WriteLine("                        ║");
+    }
 
 void Rules()
 {
@@ -224,8 +397,8 @@ void Rules()
     Console.Write("]");
     Console.Write("\n  ╚══►");
     Console.ForegroundColor = ConsoleColor.Yellow;
-    if (Console.ReadLine()=="exit"){ menu("startscreen");  } else { Rules(); }
+    if (Console.ReadLine() == "exit") { menu("startscreen"); } else { Rules(); }
 }
 
 
-//danke fürs aufräumen chatgpt
+//danke fürs aufräumen chatgpt :)
