@@ -1,36 +1,37 @@
 {
   "format": 1,
   "restore": {
-    "M:\\schule\\LF05\\Nimm3\\Nimm3\\Nimm3.csproj": {}
+    "C:\\Users\\J.Mueller3012\\source\\repos\\Nimm3\\Nimm3\\Nimm3.csproj": {}
   },
   "projects": {
-    "M:\\schule\\LF05\\Nimm3\\Nimm3\\Nimm3.csproj": {
+    "C:\\Users\\J.Mueller3012\\source\\repos\\Nimm3\\Nimm3\\Nimm3.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "M:\\schule\\LF05\\Nimm3\\Nimm3\\Nimm3.csproj",
+        "projectUniqueName": "C:\\Users\\J.Mueller3012\\source\\repos\\Nimm3\\Nimm3\\Nimm3.csproj",
         "projectName": "Nimm3",
-        "projectPath": "M:\\schule\\LF05\\Nimm3\\Nimm3\\Nimm3.csproj",
-        "packagesPath": "C:\\Users\\muellerj\\.nuget\\packages\\",
-        "outputPath": "M:\\schule\\LF05\\Nimm3\\Nimm3\\obj\\",
+        "projectPath": "C:\\Users\\J.Mueller3012\\source\\repos\\Nimm3\\Nimm3\\Nimm3.csproj",
+        "packagesPath": "C:\\Users\\J.Mueller3012\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\J.Mueller3012\\source\\repos\\Nimm3\\Nimm3\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\muellerj\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\J.Mueller3012\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net7.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net7.0": {
+            "targetAlias": "net7.0",
             "projectReferences": {}
           }
         },
@@ -38,17 +39,11 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "all"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net7.0": {
+          "targetAlias": "net7.0",
           "imports": [
             "net461",
             "net462",
@@ -65,7 +60,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

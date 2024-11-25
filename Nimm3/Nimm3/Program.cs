@@ -5,7 +5,7 @@ int bodendecke = 0;
 int moves = 0;
 int rows = 0;
 
-List<List<bool>> pyramidState=null;
+List<List<bool>> pyramidState = null;
 menu("startscreen");
 
 void Game()
@@ -62,7 +62,7 @@ void DrawPyramid(int rows, string deckenboden)
         Console.ForegroundColor = ConsoleColor.Yellow;
 
         Console.Write(new string(' ', spaces * 3 + 1)); // Leerzeichen links
-         
+
         for (int i = 0; i < pyramidState[row].Count; i++)
         {
             //Thread.Sleep(row * 4);
@@ -147,20 +147,20 @@ void RemoveStick()
     }
     else
     {
-        if(spieler)
+        if (spieler)
         {
-            
-            Console.WriteLine(new string(' ', bodendecke-4) + "Spieler 1");
+
+            Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 1");
             spieler = false;
             menu("moves");
         }
         else
         {
-            Console.WriteLine(new string(' ', bodendecke-4) + "Spieler 2");
+            Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 2");
             spieler = true;
             menu("moves");
         }
-    
+
     }
     moves--;
 }
@@ -195,7 +195,7 @@ void Check4Win()
 
 
 string menu(string method)
-    {
+{
 
     if (method == "startscreen")
     {
@@ -286,26 +286,26 @@ string menu(string method)
         Console.SetCursorPosition(deckenboden.Length / 2 + 7, Console.CursorTop - 2);
         Console.ForegroundColor = ConsoleColor.Yellow;
     }
-    else if(method == "moves")
-    { 
+    else if (method == "moves")
+    {
         string deckenboden = new string('═', bodendecke + 1);
 
         Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.Write(new string(' ', deckenboden.Length / 2-1) + "╔════════╩════════╗\n" + new string(' ', deckenboden.Length / 2-1) + "║ ");
+        Console.Write(new string(' ', deckenboden.Length / 2 - 1) + "╔════════╩════════╗\n" + new string(' ', deckenboden.Length / 2 - 1) + "║ ");
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.Write("Number of Moves ");
 
         Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.Write("║\n" + new string(' ', deckenboden.Length / 2-1) + "╚════════╦════════╝\n   ");
+        Console.Write("║\n" + new string(' ', deckenboden.Length / 2 - 1) + "╚════════╦════════╝\n   ");
         Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.Write(new string(' ', deckenboden.Length / 2+2) + "╔══╩══╗\n  " + new string(' ', deckenboden.Length / 2+2) + " ╠► ");
+        Console.Write(new string(' ', deckenboden.Length / 2 + 2) + "╔══╩══╗\n  " + new string(' ', deckenboden.Length / 2 + 2) + " ╠► ");
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write("   ║\n" + new string(' ', deckenboden.Length / 2 + 5) + "╚═════╝\n   ");
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.SetCursorPosition(deckenboden.Length / 2 + 8, Console.CursorTop - 2);
         Console.ForegroundColor = ConsoleColor.Yellow;
-        int outp= int.Parse(Console.ReadLine());
-        if (outp>3||outp<1)
+        int outp = int.Parse(Console.ReadLine());
+        if (outp > 3 || outp < 1)
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
@@ -314,50 +314,50 @@ string menu(string method)
         }
         else
         {
-            moves = outp+1;
+            moves = outp + 1;
             Console.Clear();
         }
     }
-        return "";
-    }
+    return "";
+}
 
 void logo()
-    {
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine("╔════════════════════════════════════════════════╗");
-        Console.Write("║ ");
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write("███╗  ██╗██╗███╗   ███╗███╗   ███╗    ██████╗ ");
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine(" ║");
-        Console.Write("║ ");
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write("████╗ ██║██║████╗ ████║████╗ ████║    ╚════██╗");
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine(" ║");
-        Console.Write("║ ");
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write("██╔██╗██║██║██╔████╔██║██╔████╔██║     █████╔╝");
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine(" ║");
-        Console.Write("║ ");
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write("██║╚████║██║██║╚██╔╝██║██║╚██╔╝██║     ╚═══██╗");
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine(" ║");
-        Console.Write("║ ");
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write("██║ ╚███║██║██║ ╚═╝ ██║██║ ╚═╝ ██║    ██████╔╝");
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine(" ║");
-        Console.Write("║ ");
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write("╚═╝  ╚══╝╚═╝╚═╝     ╚═╝╚═╝     ╚═╝    ╚═════╝ ");
-        Console.ForegroundColor = ConsoleColor.Magenta;
-        Console.WriteLine(" ║");
-        Console.WriteLine("╚═══════════════════════╦════════════════════════╝");
-        Console.WriteLine("                        ║");
-    }
+{
+    Console.ForegroundColor = ConsoleColor.Magenta;
+    Console.WriteLine("╔════════════════════════════════════════════════╗");
+    Console.Write("║ ");
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.Write("███╗  ██╗██╗███╗   ███╗███╗   ███╗    ██████╗ ");
+    Console.ForegroundColor = ConsoleColor.Magenta;
+    Console.WriteLine(" ║");
+    Console.Write("║ ");
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.Write("████╗ ██║██║████╗ ████║████╗ ████║    ╚════██╗");
+    Console.ForegroundColor = ConsoleColor.Magenta;
+    Console.WriteLine(" ║");
+    Console.Write("║ ");
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.Write("██╔██╗██║██║██╔████╔██║██╔████╔██║     █████╔╝");
+    Console.ForegroundColor = ConsoleColor.Magenta;
+    Console.WriteLine(" ║");
+    Console.Write("║ ");
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.Write("██║╚████║██║██║╚██╔╝██║██║╚██╔╝██║     ╚═══██╗");
+    Console.ForegroundColor = ConsoleColor.Magenta;
+    Console.WriteLine(" ║");
+    Console.Write("║ ");
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.Write("██║ ╚███║██║██║ ╚═╝ ██║██║ ╚═╝ ██║    ██████╔╝");
+    Console.ForegroundColor = ConsoleColor.Magenta;
+    Console.WriteLine(" ║");
+    Console.Write("║ ");
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.Write("╚═╝  ╚══╝╚═╝╚═╝     ╚═╝╚═╝     ╚═╝    ╚═════╝ ");
+    Console.ForegroundColor = ConsoleColor.Magenta;
+    Console.WriteLine(" ║");
+    Console.WriteLine("╚═══════════════════════╦════════════════════════╝");
+    Console.WriteLine("                        ║");
+}
 
 void Rules()
 {

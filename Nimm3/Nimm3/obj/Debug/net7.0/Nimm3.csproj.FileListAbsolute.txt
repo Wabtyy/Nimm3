@@ -1,0 +1,14 @@
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\bin\Debug\net7.0\Nimm3.exe
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\bin\Debug\net7.0\Nimm3.deps.json
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\bin\Debug\net7.0\Nimm3.runtimeconfig.json
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\bin\Debug\net7.0\Nimm3.dll
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\bin\Debug\net7.0\Nimm3.pdb
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\obj\Debug\net7.0\Nimm3.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\obj\Debug\net7.0\Nimm3.AssemblyInfoInputs.cache
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\obj\Debug\net7.0\Nimm3.AssemblyInfo.cs
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\obj\Debug\net7.0\Nimm3.csproj.CoreCompileInputs.cache
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\obj\Debug\net7.0\Nimm3.dll
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\obj\Debug\net7.0\refint\Nimm3.dll
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\obj\Debug\net7.0\Nimm3.pdb
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\obj\Debug\net7.0\Nimm3.genruntimeconfig.cache
+C:\Users\J.Mueller3012\source\repos\Nimm3\Nimm3\obj\Debug\net7.0\ref\Nimm3.dll
