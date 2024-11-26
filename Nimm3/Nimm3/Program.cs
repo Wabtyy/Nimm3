@@ -1,14 +1,14 @@
-﻿using System.Windows;
+using System.Windows;
 
 bool spieler = true;
 int bodendecke = 0;
 int moves = 0;
 int rows = 0;
-
+string[] split = null;
 List<List<bool>> pyramidState = null;
 menu("startscreen");
 
-void Game()
+void Game(string mode)
 {
     rows = int.Parse(menu("rows"));
     Console.Clear();
@@ -35,7 +35,7 @@ void Game()
     while (true)
     {
         DrawPyramid(rows, deckenboden);
-        RemoveStick();
+        RemoveStick(mode);
         Check4Win();
     }
 }
@@ -95,17 +95,59 @@ void DrawPyramid(int rows, string deckenboden)
 
 }
 
-void RemoveStick()
+void RemoveStick(string mode)
 {
 
 
     if (moves != 0)
     {
 
+        Console.WriteLine("hallo");
+        string tosplit;
+        int rndout;
+        bool valid = true;
+        int rounds;
+        
+
+        if (mode == "1vs1")
+        {
+            menu("coords");
+            split = Console.ReadLine().Split("-");
+        }
+        else if (mode == "level1")
+        {
+
+            if(!spieler)
+            {
+                menu("coords");
+                split = Console.ReadLine().Split("-");
+            }
+            else
+            {
+                Random rnd = new Random();
+                rounds = rnd.Next(1, 4);
+
+                while (valid = false && rounds != 0)
+                {
+                    //generiert: {1-3}-{1-3}
+                    rndout = rnd.Next(1, rows);
+                    tosplit = rndout + "-";
+                    rndout = rnd.Next(1, pyramidState[^1].Count);
+                    tosplit += rndout;
+                    split = tosplit.Split("-");
 
 
-        menu("coords");
-        string[] split = Console.ReadLine().Split("-");
+                    if (pyramidState[int.Parse(split[0])][int.Parse(split[1])] = true)
+                    {
+                        pyramidState[int.Parse(split[0])][int.Parse(split[1])] = false;
+                        valid = true;
+                        rounds--;
+                    }
+                }
+            }
+        }
+
+
 
         //if (!split.Contains("-"))
         //{
@@ -226,8 +268,8 @@ string menu(string method)
 
         switch (Console.ReadLine()?.ToLower().Replace(" ", ""))
         {
-            case "1vs1": Game(); break;
-            case "level1": Console.Clear(); Console.WriteLine("Coming soon!"); Thread.Sleep(2000); menu("startscreen"); break;
+            case "1vs1": Game("1vs1"); break;
+            case "level1": Game("level1"); break;
             case "level2": Console.Clear(); Console.WriteLine("Coming soon!"); Thread.Sleep(2000); menu("startscreen"); break;
             case "spielregeln": Rules(); break;
         }
