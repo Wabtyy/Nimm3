@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 
 bool spieler = true;
 int bodendecke = 0;
@@ -127,20 +127,38 @@ void RemoveStick(string mode)
             }
             else
             {
-
                 Random rnd = new Random();
-                rounds = rnd.Next(1, 4);
+
+                    rounds = rnd.Next(1, 4);
+                
+              
 
                 while (rounds>-1)
                 {
+                    int remainingSticks = 0;
+                    foreach (var row in pyramidState)
+                    {
+                        remainingSticks += row.Count(stick => stick);
+                    }
 
+                    if (remainingSticks == 1) // Wenn nur noch ein Stäbchen übrig ist
+                    {
+                        for (int r = 0; r < pyramidState.Count; r++)
+                        {
+                            for (int c = 0; c < pyramidState[r].Count; c++)
+                            {
+                                if (pyramidState[r][c]) // Das letzte Stäbchen entfernen
+                                {
+                                    pyramidState[r][c] = false;
+                                    spieler = false; // Zug beenden
+                                    return;
+                                }
+                            }
+                        }
+                    }
                     //generiert: {1-3}-{1-3}
                     rndout = rnd.Next(1, rows+1);
                     rndoutt = rnd.Next(1, pyramidState[^1].Count + 1);
-
-                    tosplit = rndout + "-" + rndoutt;
-
-                    split = tosplit.Split("-");
 
                     try
                     {
@@ -155,7 +173,7 @@ void RemoveStick(string mode)
                     }
                     catch
                     {
-
+                       
                     }
 
                 }
@@ -232,7 +250,6 @@ void RemoveStick(string mode)
             {
                 Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 2");
                 spieler = true;
-                menu("moves");
             }
                 
             
@@ -252,6 +269,7 @@ void Check4Win()
         }
     }
     Console.Clear();
+    Console.ForegroundColor = ConsoleColor.Green;
     if (spieler)
     {
         Console.WriteLine("Spieler 2 hat gewonnen!");
@@ -261,6 +279,7 @@ void Check4Win()
         Console.WriteLine("Spieler 1 hat gewonnen!");
     }
     Console.ReadLine();
+    menu("startscreen");
 }
 
 
