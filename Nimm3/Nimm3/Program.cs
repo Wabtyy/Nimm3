@@ -105,7 +105,8 @@ void RemoveStick(string mode)
         Console.WriteLine("hallo");
         string tosplit;
         int rndout;
-        bool valid = true;
+        int rndoutt;
+        bool valid = false;
         int rounds;
         
 
@@ -116,34 +117,50 @@ void RemoveStick(string mode)
         }
         else if (mode == "level1")
         {
+            
 
-            if(!spieler)
+            if (!spieler)
             {
+
                 menu("coords");
                 split = Console.ReadLine().Split("-");
             }
             else
             {
+
                 Random rnd = new Random();
                 rounds = rnd.Next(1, 4);
 
-                while (valid = false && rounds != 0)
+                while (rounds>-1)
                 {
+
                     //generiert: {1-3}-{1-3}
-                    rndout = rnd.Next(1, rows);
-                    tosplit = rndout + "-";
-                    rndout = rnd.Next(1, pyramidState[^1].Count);
-                    tosplit += rndout;
+                    rndout = rnd.Next(1, rows+1);
+                    rndoutt = rnd.Next(1, pyramidState[^1].Count + 1);
+
+                    tosplit = rndout + "-" + rndoutt;
+
                     split = tosplit.Split("-");
 
-
-                    if (pyramidState[int.Parse(split[0])][int.Parse(split[1])] = true)
+                    try
                     {
-                        pyramidState[int.Parse(split[0])][int.Parse(split[1])] = false;
-                        valid = true;
-                        rounds--;
+                        if (pyramidState[rndout][rndoutt] == true)
+                        {
+                           
+                            pyramidState[rndout][rndoutt] = false;
+                            rounds--;
+                            
+                            
+                        }
                     }
+                    catch
+                    {
+
+                    }
+
                 }
+                string deckenboden = new string('═', bodendecke + 1);
+                spieler = false; DrawPyramid(rows, deckenboden); menu("moves"); RemoveStick("level1");
             }
         }
 
@@ -156,8 +173,9 @@ void RemoveStick(string mode)
         //    Thread.Sleep(4000);
         //    return;
         // }
-
-        int.TryParse(split[0], out int selectedRow); selectedRow -= 1;
+        if (!spieler)
+        {
+            int.TryParse(split[0], out int selectedRow); selectedRow -= 1;
         int.TryParse(split[1], out int globalColumn); globalColumn -= 1;
 
 
@@ -165,42 +183,59 @@ void RemoveStick(string mode)
         int rowEndColumn = rowStartColumn + pyramidState[selectedRow].Count - 1;
 
         int localColumn = globalColumn - rowStartColumn;
-        try
-        {
-            if (!pyramidState[selectedRow][localColumn])
+
+            try
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Clear();
-                Console.WriteLine($"Diese Position (Zeile {globalColumn}, Spalte {selectedRow}) ist bereits leer!");
-                Thread.Sleep(2000);
-                return;
+                if (!pyramidState[selectedRow][localColumn])
+                {
+                  //  Console.ForegroundColor = ConsoleColor.Red;
+                  //  Console.Clear();
+                  //  Console.WriteLine($"Diese Position (Zeile {globalColumn}, Spalte {selectedRow}) ist bereits leer!");
+                   // Thread.Sleep(2000);
+                 //   return;
+                }
+                else
+                {
+                    pyramidState[selectedRow][localColumn] = false;
+                }
+            }
+            catch
+            {
+               // Console.ForegroundColor = ConsoleColor.Red;
+              //  Console.Clear();
+              //  Console.WriteLine("Ungültige Eingabe.");
+              //  Thread.Sleep(2000);
+              //  return;
             }
         }
-        catch
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Clear();
-            Console.WriteLine("Ungültige Eingabe.");
-            Thread.Sleep(2000);
-            return;
-        }
 
-        pyramidState[selectedRow][localColumn] = false;
+
+        
     }
     else
     {
         if (spieler)
         {
-
+            
             Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 1");
             spieler = false;
             menu("moves");
         }
         else
         {
-            Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 2");
-            spieler = true;
-            menu("moves");
+            if (mode == "level1")
+            {
+                Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 2");
+                spieler = true;
+            }
+            else
+            {
+                Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 2");
+                spieler = true;
+                menu("moves");
+            }
+                
+            
         }
 
     }
