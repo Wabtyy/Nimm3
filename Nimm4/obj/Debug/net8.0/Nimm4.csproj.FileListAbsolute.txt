@@ -1,0 +1,14 @@
+M:\schule\LF05\Nimm4\Nimm4\bin\Debug\net8.0\Nimm4.exe
+M:\schule\LF05\Nimm4\Nimm4\bin\Debug\net8.0\Nimm4.deps.json
+M:\schule\LF05\Nimm4\Nimm4\bin\Debug\net8.0\Nimm4.runtimeconfig.json
+M:\schule\LF05\Nimm4\Nimm4\bin\Debug\net8.0\Nimm4.dll
+M:\schule\LF05\Nimm4\Nimm4\bin\Debug\net8.0\Nimm4.pdb
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm4.GeneratedMSBuildEditorConfig.editorconfig
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm4.AssemblyInfoInputs.cache
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm4.AssemblyInfo.cs
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm4.csproj.CoreCompileInputs.cache
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm4.dll
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\refint\Nimm4.dll
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm4.pdb
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm4.genruntimeconfig.cache
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\ref\Nimm4.dll

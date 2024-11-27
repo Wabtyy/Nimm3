@@ -1,0 +1,14 @@
+M:\schule\LF05\Nimm4\Nimm4\bin\Debug\net8.0\Nimm3-V1.exe
+M:\schule\LF05\Nimm4\Nimm4\bin\Debug\net8.0\Nimm3-V1.deps.json
+M:\schule\LF05\Nimm4\Nimm4\bin\Debug\net8.0\Nimm3-V1.runtimeconfig.json
+M:\schule\LF05\Nimm4\Nimm4\bin\Debug\net8.0\Nimm3-V1.dll
+M:\schule\LF05\Nimm4\Nimm4\bin\Debug\net8.0\Nimm3-V1.pdb
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm3-V1.GeneratedMSBuildEditorConfig.editorconfig
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm3-V1.AssemblyInfoInputs.cache
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm3-V1.AssemblyInfo.cs
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm3-V1.csproj.CoreCompileInputs.cache
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm3-V1.dll
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\refint\Nimm3-V1.dll
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm3-V1.pdb
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\Nimm3-V1.genruntimeconfig.cache
+M:\schule\LF05\Nimm4\Nimm4\obj\Debug\net8.0\ref\Nimm3-V1.dll
