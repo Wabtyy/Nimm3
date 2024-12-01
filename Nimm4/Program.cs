@@ -187,7 +187,7 @@ void RemoveStick(string mode)
         //if (!split.Contains("-"))
         //{
         //    Console.ForegroundColor = ConsoleColor.Red;
-        //    Console.WriteLine("Ungültige Eingabe! Stellen Sie sicher, dass die Eingabe ein \"-\" enthält (z.B. 1-5).");
+        //    Console.WriteLine("Ungültige Eingabe! Stellen Sie sicher, das die Eingabe ein \"-\" enthält (z.B. 1-5).");
         //    Thread.Sleep(4000);
         //    return;
         // }
@@ -468,22 +468,22 @@ void Rules()
     Console.Write("\n  ╔═════════════════════╩══════════════════════╗");
     Console.Write("\n  ║ ");
     Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write("    Dass spiel besteht aus 2 Spielern,");
+    Console.Write("    Das Spiel besteht aus 2 Spielern, ");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write("     ║");
     Console.Write("\n  ║ ");
     Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write(" die abwechselnd 1 Bis 3 Stäbchen ziehen. ");
+    Console.Write(" die abwechselnd 1 bis 3 Stäbchen ziehen. ");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write(" ║");
     Console.Write("\n  ║ ");
     Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write(" Derjenige der dass letzte Stäbchen zieht,");
+    Console.Write(" Derjenige der das letzte Stäbchen zieht, ");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write(" ║");
     Console.Write("\n  ║ ");
     Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write("   hat dass spiel automatisch verloren.");
+    Console.Write("   hat das Spiel automatisch verloren. ");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write("    ║\n  ╠════════════════════════════════════════════╝");
     Console.Write("\n  ╠═[");
