@@ -1,5 +1,3 @@
-using System.Windows;
-
 bool spieler = true;
 int bodendecke = 0;
 int moves = 0;
@@ -7,21 +5,15 @@ int rows = 0;
 string[] split = null;
 List<List<bool>> pyramidState = null;
 menu("startscreen");
-
 void Game(string mode)
 {
     rows = int.Parse(menu("rows"));
     Console.Clear();
-
     int spaces = rows;
     bodendecke = spaces * 6 - 2;
-
     string deckenboden = new string('═', bodendecke + 1);
-
     Console.ForegroundColor = ConsoleColor.Magenta;
-
     pyramidState = new List<List<bool>>();
-
     //pyramide aufbauen
     for (int r = 1; r <= rows; r++)
     {
@@ -31,7 +23,6 @@ void Game(string mode)
             pyramidState[r - 1].Add(true); // Alle Positionen aktivieren
         }
     }
-
     while (true)
     {
         DrawPyramid(rows, deckenboden);
@@ -39,15 +30,12 @@ void Game(string mode)
         Check4Win();
     }
 }
-
 void DrawPyramid(int rows, string deckenboden)
 {
     Console.Clear();
     int spaces = rows;
-
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write("\n   ╔═══╦" + deckenboden + "╗");
-
     for (int row = 0; row < pyramidState.Count; row++)
     {
         spaces--;
@@ -55,32 +43,25 @@ void DrawPyramid(int rows, string deckenboden)
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write("   ║");
         Console.ForegroundColor = ConsoleColor.Cyan;
-
         Console.Write($"{row + 1,2} ");
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write("║");
         Console.ForegroundColor = ConsoleColor.Yellow;
-
         Console.Write(new string(' ', spaces * 3 + 1)); // Leerzeichen links
-
         for (int i = 0; i < pyramidState[row].Count; i++)
         {
             //Thread.Sleep(row * 4);
-            Console.Write(pyramidState[row][i] ? " ! " : "   "); // "!" oder Leerzeichen 
+            Console.Write(pyramidState[row][i] ? " | " : "   "); // "!" oder Leerzeichen 
         }
-
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write(new string(' ', spaces * 3)); // Leerzeichen rechts
         Console.Write(" ║");
     }
-
     Console.WriteLine("\n   ╚═══╬" + deckenboden + "╣");
-
     // Koordinaten anzeigen
     Console.Write("      ");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write(" ║");
-
     Console.ForegroundColor = ConsoleColor.Yellow;
     for (int col = 1; col <= pyramidState[^1].Count; col++) //zählt die stäbchen in der letzen reihe
     {
@@ -88,177 +69,201 @@ void DrawPyramid(int rows, string deckenboden)
         Console.Write($"{col,3}");
         Console.ForegroundColor = ConsoleColor.Yellow;
     }
-
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write("  ║");
     Console.WriteLine("\n       ╚" + deckenboden.Substring(0, deckenboden.Length / 2) + "╦" + deckenboden.Substring(0, deckenboden.Length / 2) + "╝");
-
 }
-
 void RemoveStick(string mode)
 {
-
-
-    if (moves != 0)
+    if (moves <= 0) // Keine Züge mehr übrig
     {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Keine Züge mehr übrig. Spielerwechsel!");
+        spieler = !spieler; // Spieler wechseln
 
-        Console.WriteLine("hallo");
-        string tosplit;
-        int rndout;
-        int rndoutt;
-        bool valid = false;
-        int rounds;
-        
+        // Spieler auffordern, die Anzahl der Züge einzugeben
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(spieler ? "Spieler 1 ist an der Reihe." : "Spieler 2 ist an der Reihe.");
+        menu("moves"); // Eingabe der Anzahl der Züge
+        Console.Clear();
+        DrawPyramid(rows, new string('═', bodendecke + 1)); // Aktualisieren der Pyramide
+        return;
+    }
 
-        if (mode == "1vs1")
+    Console.Clear();
+    if (mode == "1vs1")
+    {
+        menu("coords");
+        string[] split = Console.ReadLine()?.Split("-");
+
+        if (split == null ||
+            split.Length != 2 ||
+            !int.TryParse(split[0], out int selectedRow) ||
+            !int.TryParse(split[1], out int globalColumn))
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Ungültige Eingabe! Bitte geben Sie Koordinaten in der Form 'Reihe-Spalte' ein.");
+            Thread.Sleep(2000);
+            return;
+        }
+
+        selectedRow -= 1; // Anpassung der Indizes
+        globalColumn -= 1;
+
+        if (selectedRow < 0 || selectedRow >= pyramidState.Count)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Ungültige Reihe. Bitte innerhalb des gültigen Bereichs bleiben.");
+            Thread.Sleep(2000);
+            return;
+        }
+
+        // Berechnung des Startwerts der globalen Spaltennummer für die gewählte Reihe
+        int startGlobalColumn = 0;
+        for (int i = 0; i < selectedRow; i++)
+        {
+            startGlobalColumn += pyramidState[i].Count;
+        }
+
+        int localColumn = globalColumn - startGlobalColumn;
+
+        if (localColumn < 0 || localColumn >= pyramidState[selectedRow].Count)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Ungültige Spalte. Bitte innerhalb des gültigen Bereichs bleiben.");
+            Thread.Sleep(2000);
+            return;
+        }
+
+        if (!pyramidState[selectedRow][localColumn])
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Diese Position ist bereits leer!");
+            Thread.Sleep(2000);
+            return;
+        }
+
+        // Stäbchen entfernen
+        pyramidState[selectedRow][localColumn] = false;
+        moves--; // Züge reduzieren
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"Stäbchen entfernt! Verbleibende Züge: {moves}");
+
+        if (moves <= 0) // Spielerwechsel
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Clear();
+            Console.WriteLine("Keine Züge mehr übrig. Spielerwechsel!");
+            Thread.Sleep(2000);
+            Console.Clear();
+            DrawPyramid(rows, new string('═', bodendecke + 1));
+            spieler = !spieler; // Spieler wechseln
+
+            menu("moves"); // Eingabe der Anzahl der Züge
+            Console.Clear();
+        }
+
+        DrawPyramid(rows, new string('═', bodendecke + 1)); // Aktualisieren der Pyramide
+    }
+    else if (mode == "level1")
+    {
+        // Logik für den Computer bleibt gleich
+        if (!spieler) // Spieler 2 (Mensch)
         {
             menu("coords");
-            split = Console.ReadLine().Split("-");
-        }
-        else if (mode == "level1")
-        {
-            
+            string[] split = Console.ReadLine()?.Split("-");
 
-            if (!spieler)
+            if (split == null ||
+                split.Length != 2 ||
+                !int.TryParse(split[0], out int selectedRow) ||
+                !int.TryParse(split[1], out int globalColumn))
             {
-
-                menu("coords");
-                split = Console.ReadLine().Split("-");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Ungültige Eingabe! Bitte geben Sie Koordinaten in der Form 'Reihe-Spalte' ein.");
+                Thread.Sleep(2000);
+                return;
             }
-            else
+
+            selectedRow -= 1;
+            globalColumn -= 1;
+
+            if (selectedRow < 0 || selectedRow >= pyramidState.Count)
             {
-                Random rnd = new Random();
-
-                    rounds = rnd.Next(1, 4);
-                
-              
-
-                while (rounds>-1)
-                {
-                    int remainingSticks = 0;
-                    foreach (var row in pyramidState)
-                    {
-                        remainingSticks += row.Count(stick => stick);
-                    }
-
-                    if (remainingSticks == 1) // Wenn nur noch ein Stäbchen übrig ist
-                    {
-                        for (int r = 0; r < pyramidState.Count; r++)
-                        {
-                            for (int c = 0; c < pyramidState[r].Count; c++)
-                            {
-                                if (pyramidState[r][c]) // Das letzte Stäbchen entfernen
-                                {
-                                    pyramidState[r][c] = false;
-                                    spieler = false; // Zug beenden
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                    //generiert: {1-3}-{1-3}
-                    rndout = rnd.Next(1, rows+1);
-                    rndoutt = rnd.Next(1, pyramidState[^1].Count + 1);
-
-                    try
-                    {
-                        if (pyramidState[rndout][rndoutt] == true)
-                        {
-                           
-                            pyramidState[rndout][rndoutt] = false;
-                            rounds--;
-                            
-                            
-                        }
-                    }
-                    catch
-                    {
-                       
-                    }
-
-                }
-                string deckenboden = new string('═', bodendecke + 1);
-                spieler = false; DrawPyramid(rows, deckenboden); menu("moves"); RemoveStick("level1");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Ungültige Reihe. Bitte innerhalb des gültigen Bereichs bleiben.");
+                Thread.Sleep(2000);
+                return;
             }
-        }
 
-
-
-        //if (!split.Contains("-"))
-        //{
-        //    Console.ForegroundColor = ConsoleColor.Red;
-        //    Console.WriteLine("Ungültige Eingabe! Stellen Sie sicher, das die Eingabe ein \"-\" enthält (z.B. 1-5).");
-        //    Thread.Sleep(4000);
-        //    return;
-        // }
-        if (!spieler)
-        {
-            int.TryParse(split[0], out int selectedRow); selectedRow -= 1;
-        int.TryParse(split[1], out int globalColumn); globalColumn -= 1;
-
-
-        int rowStartColumn = pyramidState.Count - 1 - selectedRow; // Startposition der Zeile im globalen Koordinatensystem
-        int rowEndColumn = rowStartColumn + pyramidState[selectedRow].Count - 1;
-
-        int localColumn = globalColumn - rowStartColumn;
-
-            try
+            int startGlobalColumn = 0;
+            for (int i = 0; i < selectedRow; i++)
             {
-                if (!pyramidState[selectedRow][localColumn])
-                {
-                  //  Console.ForegroundColor = ConsoleColor.Red;
-                  //  Console.Clear();
-                  //  Console.WriteLine($"Diese Position (Zeile {globalColumn}, Spalte {selectedRow}) ist bereits leer!");
-                   // Thread.Sleep(2000);
-                 //   return;
-                }
-                else
+                startGlobalColumn += pyramidState[i].Count;
+            }
+
+            int localColumn = globalColumn - startGlobalColumn;
+
+            if (localColumn < 0 || localColumn >= pyramidState[selectedRow].Count)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Ungültige Spalte. Bitte innerhalb des gültigen Bereichs bleiben.");
+                Thread.Sleep(2000);
+                return;
+            }
+
+            if (!pyramidState[selectedRow][localColumn])
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Diese Position ist bereits leer!");
+                Thread.Sleep(2000);
+                return;
+            }
+
+            pyramidState[selectedRow][localColumn] = false;
+            moves--; // Züge reduzieren
+        }
+        else // Computer (Spieler 1)
+        {
+            // Computer-Logik bleibt unverändert
+            Random rnd = new Random();
+            while (true)
+            {
+                int selectedRow = rnd.Next(0, pyramidState.Count);
+                int localColumn = rnd.Next(0, pyramidState[selectedRow].Count);
+
+                if (pyramidState[selectedRow][localColumn])
                 {
                     pyramidState[selectedRow][localColumn] = false;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Computer entfernt Stäbchen in Reihe {selectedRow + 1}, Spalte {localColumn + 1}.");
+                    break;
                 }
             }
-            catch
-            {
-               // Console.ForegroundColor = ConsoleColor.Red;
-              //  Console.Clear();
-              //  Console.WriteLine("Ungültige Eingabe.");
-              //  Thread.Sleep(2000);
-              //  return;
-            }
+
+            moves--; // Züge reduzieren
         }
 
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"Verbleibende Züge: {moves}");
 
-        
-    }
-    else
-    {
-        if (spieler)
+        if (moves <= 0) // Spielerwechsel
         {
-            
-            Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 1");
-            spieler = false;
-            menu("moves");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Keine Züge mehr übrig. Spielerwechsel!");
+            spieler = !spieler; // Spieler wechseln
+            menu("moves"); // Eingabe der Anzahl der Züge
+            Console.Clear();
         }
-        else
-        {
-            if (mode == "level1")
-            {
-                Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 2");
-                spieler = true;
-            }
-            else
-            {
-                Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 2");
-                spieler = true;
-            }
-                
-            
-        }
-
+        Check4Win();
+        DrawPyramid(rows, new string('═', bodendecke + 1)); // Aktualisieren der Pyramide
     }
-    moves--;
 }
 
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Check4Win()
 {
     foreach (var row in pyramidState)
@@ -270,7 +275,7 @@ void Check4Win()
     }
     Console.Clear();
     Console.ForegroundColor = ConsoleColor.Green;
-    if (spieler)
+    if (!spieler)
     {
         Console.WriteLine("Spieler 2 hat gewonnen!");
     }
@@ -281,18 +286,8 @@ void Check4Win()
     Console.ReadLine();
     menu("startscreen");
 }
-
-
-
-
-
-
-
-
-
 string menu(string method)
 {
-
     if (method == "startscreen")
     {
         Console.Clear();
@@ -316,10 +311,8 @@ string menu(string method)
         Console.Write("   SPIELREGELN   ");
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write("║\n  ╚══════════════════╝");
-
         Console.SetCursorPosition(35, Console.CursorTop - 3);
         Console.ForegroundColor = ConsoleColor.Yellow;
-
         switch (Console.ReadLine()?.ToLower().Replace(" ", ""))
         {
             case "1vs1": Game("1vs1"); break;
@@ -357,21 +350,16 @@ string menu(string method)
                 Thread.Sleep(2500);
                 Console.ForegroundColor = ConsoleColor.Magenta;
             }
-
         }
     }
     else if (method == "coords")
     {
         string deckenboden = new string('═', bodendecke + 1);
         DrawPyramid(rows, deckenboden);
-
-
-
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write(new string(' ', deckenboden.Length / 2) + "╔═══════╩═══════╗\n" + new string(' ', deckenboden.Length / 2) + "║ ");
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.Write("Select coords ");
-
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write("║\n" + new string(' ', deckenboden.Length / 2) + "╚═══════╦═══════╝\n   ");
         Console.ForegroundColor = ConsoleColor.Magenta;
@@ -385,12 +373,10 @@ string menu(string method)
     else if (method == "moves")
     {
         string deckenboden = new string('═', bodendecke + 1);
-
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write(new string(' ', deckenboden.Length / 2 - 1) + "╔════════╩════════╗\n" + new string(' ', deckenboden.Length / 2 - 1) + "║ ");
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.Write("Number of Moves ");
-
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write("║\n" + new string(' ', deckenboden.Length / 2 - 1) + "╚════════╦════════╝\n   ");
         Console.ForegroundColor = ConsoleColor.Magenta;
@@ -410,13 +396,12 @@ string menu(string method)
         }
         else
         {
-            moves = outp + 1;
+            moves = outp;
             Console.Clear();
         }
     }
     return "";
 }
-
 void logo()
 {
     Console.ForegroundColor = ConsoleColor.Magenta;
@@ -454,7 +439,6 @@ void logo()
     Console.WriteLine("╚═══════════════════════╦════════════════════════╝");
     Console.WriteLine("                        ║");
 }
-
 void Rules()
 {
     Console.Clear();
@@ -468,22 +452,22 @@ void Rules()
     Console.Write("\n  ╔═════════════════════╩══════════════════════╗");
     Console.Write("\n  ║ ");
     Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write("    Das Spiel besteht aus 2 Spielern, ");
+    Console.Write("    Dass spiel besteht aus 2 Spielern,");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write("     ║");
     Console.Write("\n  ║ ");
     Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write(" die abwechselnd 1 bis 3 Stäbchen ziehen. ");
+    Console.Write(" die abwechselnd 1 Bis 3 Stäbchen ziehen. ");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write(" ║");
     Console.Write("\n  ║ ");
     Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write(" Derjenige der das letzte Stäbchen zieht, ");
+    Console.Write(" Derjenige der dass letzte Stäbchen zieht,");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write(" ║");
     Console.Write("\n  ║ ");
     Console.ForegroundColor = ConsoleColor.Yellow;
-    Console.Write("   hat das Spiel automatisch verloren. ");
+    Console.Write("   hat dass spiel automatisch verloren.");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write("    ║\n  ╠════════════════════════════════════════════╝");
     Console.Write("\n  ╠═[");
@@ -495,6 +479,4 @@ void Rules()
     Console.ForegroundColor = ConsoleColor.Yellow;
     if (Console.ReadLine() == "exit") { menu("startscreen"); } else { Rules(); }
 }
-
-
 //danke fürs aufräumen chatgpt :)
