@@ -129,7 +129,16 @@ void RemoveStick(string mode)
             if (!spieler)
             {
                 menu("coords");
-                split = Console.ReadLine().Split("-");
+                
+                try
+                {
+                    split = Console.ReadLine().Split("-");
+                }
+                catch
+                {
+
+                }
+                
             }
             else
             {
@@ -315,15 +324,22 @@ string menu(string method)
 
         Console.SetCursorPosition(35, Console.CursorTop - 3);
         Console.ForegroundColor = ConsoleColor.Yellow;
-
-        switch (Console.ReadLine()?.ToLower().Replace(" ", ""))
+        try
         {
-            case "1vs1": Game("1vs1"); break;
-            case "level1": Game("level1"); break;
-            case "level2": Console.Clear(); Console.WriteLine("Coming soon!"); Thread.Sleep(2000); menu("startscreen"); break;
-            case "spielregeln": Rules(); break;
+            switch (Console.ReadLine()?.ToLower().Replace(" ", ""))
+            {
+                case "1vs1": Game("1vs1"); break;
+                case "level1": Game("level1"); break;
+                case "level2": Console.Clear(); Console.WriteLine("Coming soon!"); Thread.Sleep(2000); menu("startscreen"); break;
+                case "spielregeln": Rules(); break;
+            }
+            return "";
         }
-        return "";
+        catch
+        {
+
+        }
+       
     }
     else if (method == "rows")
     {
@@ -340,7 +356,16 @@ string menu(string method)
             Console.Write("║\n               ╚════════╦═══════╝\n                     ╔══╩══╗\n                     ╠═►   ║\n                     ╚═════╝");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.SetCursorPosition(25, Console.CursorTop - 1);
-            int abc = int.Parse(Console.ReadLine());
+           
+            try
+            {
+                int abc = int.Parse(Console.ReadLine());
+            }
+            catch
+            {
+
+            }
+
             if (abc > 2 && abc < 10)
             {
                 return abc.ToString();
@@ -353,7 +378,6 @@ string menu(string method)
                 Thread.Sleep(2500);
                 Console.ForegroundColor = ConsoleColor.Magenta;
             }
-
         }
     }
     else if (method == "coords")
@@ -394,7 +418,16 @@ string menu(string method)
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.SetCursorPosition(deckenboden.Length / 2 + 8, Console.CursorTop - 2);
         Console.ForegroundColor = ConsoleColor.Yellow;
-        int outp = int.Parse(Console.ReadLine());
+        int outp = 0;
+        try
+        {
+            outp = int.Parse(Console.ReadLine());
+        }
+        catch
+        {
+
+        }
+       
         if (outp > 3 || outp < 1)
         {
             Console.Clear();
