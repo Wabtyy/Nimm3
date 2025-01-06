@@ -110,24 +110,50 @@ void RemoveStick(string mode)
         {
             menu("coords");
             split = Console.ReadLine().Split("-");
+            int.TryParse(split[0], out int selectedRow); selectedRow -= 1;
+            int.TryParse(split[1], out int globalColumn); globalColumn -= 1;
+
+            int rowStartColumn = pyramidState.Count - 1 - selectedRow; // Startposition der Zeile im globalen Koordinatensystem
+            int rowEndColumn = rowStartColumn + pyramidState[selectedRow].Count - 1;
+
+            int localColumn = globalColumn - rowStartColumn;
+
+            try
+            {
+                if (!pyramidState[selectedRow][localColumn])
+                {
+                    //  Console.ForegroundColor = ConsoleColor.Red;
+                    //  Console.Clear();
+                    //  Console.WriteLine($"Diese Position ist bereits leer!");
+                    // Thread.Sleep(2000);
+                    //   return;
+                }
+                else
+                {
+                    pyramidState[selectedRow][localColumn] = false;
+                }
+            }
+            catch
+            {
+                // Console.ForegroundColor = ConsoleColor.Red;
+                //  Console.Clear();
+                //  Console.WriteLine("Ungültige Eingabe.");
+                //  Thread.Sleep(2000);
+                //  return;
+            }
+            
         }
         else if (mode == "level1")
         {
-
-
             if (!spieler)
             {
-
                 menu("coords");
                 split = Console.ReadLine().Split("-");
             }
             else
             {
                 Random rnd = new Random();
-
                 rounds = rnd.Next(1, 4);
-
-
 
                 while (rounds > -1)
                 {
@@ -189,7 +215,6 @@ void RemoveStick(string mode)
             int.TryParse(split[0], out int selectedRow); selectedRow -= 1;
             int.TryParse(split[1], out int globalColumn); globalColumn -= 1;
 
-
             int rowStartColumn = pyramidState.Count - 1 - selectedRow; // Startposition der Zeile im globalen Koordinatensystem
             int rowEndColumn = rowStartColumn + pyramidState[selectedRow].Count - 1;
 
@@ -238,11 +263,13 @@ void RemoveStick(string mode)
             {
                 Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 2");
                 spieler = true;
+                
             }
             else
             {
                 Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 2");
                 spieler = true;
+                menu("moves");
             }
         }
     }
