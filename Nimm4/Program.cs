@@ -3,6 +3,10 @@ int bodendecke = 0;
 int moves = 0;
 int remainingSticks3 = 0;
 int rows = 0;
+int rndout;
+int rndoutt;
+int rounds;
+
 string[] split = null;
 List<List<bool>> pyramidState = null;
 menu("startscreen");
@@ -75,7 +79,6 @@ void DrawPyramid(int rows, string deckenboden)
 
     Console.WriteLine("\n   ╚═══╬" + deckenboden + "╣");
 
-    // Koordinaten anzeigen
     Console.Write("      ");
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write(" ║");
@@ -91,43 +94,26 @@ void DrawPyramid(int rows, string deckenboden)
     Console.ForegroundColor = ConsoleColor.Magenta;
     Console.Write("  ║");
     Console.WriteLine("\n       ╚" + deckenboden.Substring(0, deckenboden.Length / 2) + "╦" + deckenboden.Substring(0, deckenboden.Length / 2) + "╝");
-
 }
 
 void RemoveStick(string mode)
 {
     if (moves != 0)
     {
-
-        Console.WriteLine("hallo");
-        string tosplit;
-        int rndout;
-        int rndoutt;
-        bool valid = false;
-        int rounds;
-
-
         if (mode == "1vs1")
         {
             menu("coords");
             split = Console.ReadLine().Split("-");
             int.TryParse(split[0], out int selectedRow); selectedRow -= 1;
             int.TryParse(split[1], out int globalColumn); globalColumn -= 1;
-
             int rowStartColumn = pyramidState.Count - 1 - selectedRow; // Startposition der Zeile im globalen Koordinatensystem
             int rowEndColumn = rowStartColumn + pyramidState[selectedRow].Count - 1;
-
             int localColumn = globalColumn - rowStartColumn;
 
             try
             {
                 if (!pyramidState[selectedRow][localColumn])
                 {
-                    //  Console.ForegroundColor = ConsoleColor.Red;
-                    //  Console.Clear();
-                    //  Console.WriteLine($"Diese Position ist bereits leer!");
-                    // Thread.Sleep(2000);
-                    //   return;
                 }
                 else
                 {
@@ -136,13 +122,7 @@ void RemoveStick(string mode)
             }
             catch
             {
-                // Console.ForegroundColor = ConsoleColor.Red;
-                //  Console.Clear();
-                //  Console.WriteLine("Ungültige Eingabe.");
-                //  Thread.Sleep(2000);
-                //  return;
             }
-
         }
         else if (mode == "level1")
         {
@@ -195,41 +175,23 @@ void RemoveStick(string mode)
                     {
 
                     }
-
                 }
                 string deckenboden = new string('═', bodendecke + 1);
                 spieler = false; DrawPyramid(rows, deckenboden); ShowTip(); menu("moves"); RemoveStick("level1");
             }
         }
-
-
-
-        //if (!split.Contains("-"))
-        //{
-        //    Console.ForegroundColor = ConsoleColor.Red;
-        //    Console.WriteLine("Ungültige Eingabe! Stellen Sie sicher, dass die Eingabe ein \"-\" enthält (z.B. 1-5).");
-        //    Thread.Sleep(4000);
-        //    return;
-        // }
         if (!spieler)
         {
             int.TryParse(split[0], out int selectedRow); selectedRow -= 1;
             int.TryParse(split[1], out int globalColumn); globalColumn -= 1;
-
             int rowStartColumn = pyramidState.Count - 1 - selectedRow; // Startposition der Zeile im globalen Koordinatensystem
             int rowEndColumn = rowStartColumn + pyramidState[selectedRow].Count - 1;
-
             int localColumn = globalColumn - rowStartColumn;
 
             try
             {
                 if (!pyramidState[selectedRow][localColumn])
                 {
-                    //  Console.ForegroundColor = ConsoleColor.Red;
-                    //  Console.Clear();
-                    //  Console.WriteLine($"Diese Position ist bereits leer!");
-                    // Thread.Sleep(2000);
-                    //   return;
                 }
                 else
                 {
@@ -238,24 +200,15 @@ void RemoveStick(string mode)
             }
             catch
             {
-                // Console.ForegroundColor = ConsoleColor.Red;
-                //  Console.Clear();
-                //  Console.WriteLine("Ungültige Eingabe.");
-                //  Thread.Sleep(2000);
-                //  return;
             }
         }
-
-
-
     }
     else
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
         if (spieler)
         {
-
-            Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 1");
+            Console.WriteLine(new string(' ', bodendecke / 2 - 1) + "Spieler 1");
             ShowTip();
             spieler = false;
             menu("moves");
@@ -264,13 +217,12 @@ void RemoveStick(string mode)
         {
             if (mode == "level1")
             {
-                Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 2");
+                Console.WriteLine(new string(' ', bodendecke / 2 - 1) + "Spieler 2");
                 spieler = true;
-
             }
             else
             {
-                Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 2");
+                Console.WriteLine(new string(' ', bodendecke / 2 - 1) + "Spieler 2");
                 spieler = true;
                 ShowTip();
                 menu("moves");
@@ -308,7 +260,6 @@ void ShowTip()
     }
 }
 
-
 void Check4Win()
 {
     foreach (var row in pyramidState)
@@ -318,8 +269,10 @@ void Check4Win()
             return;
         }
     }
+
     Console.Clear();
     Console.ForegroundColor = ConsoleColor.Green;
+
     if (spieler)
     {
         Console.WriteLine("Spieler 2 hat gewonnen!");
@@ -328,6 +281,7 @@ void Check4Win()
     {
         Console.WriteLine("Spieler 1 hat gewonnen!");
     }
+
     Console.ReadLine();
     menu("startscreen");
 }
@@ -406,8 +360,6 @@ string menu(string method)
     {
         string deckenboden = new string('═', bodendecke + 1);
         DrawPyramid(rows, deckenboden);
-
-
 
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write(new string(' ', deckenboden.Length / 2) + "╔═══════╩═══════╗\n" + new string(' ', deckenboden.Length / 2) + "║ ");
