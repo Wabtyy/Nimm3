@@ -1,6 +1,7 @@
 bool spieler = true;
 int bodendecke = 0;
 int moves = 0;
+int remainingSticks3 = 0;
 int rows = 0;
 string[] split = null;
 List<List<bool>> pyramidState = null;
@@ -141,7 +142,7 @@ void RemoveStick(string mode)
                 //  Thread.Sleep(2000);
                 //  return;
             }
-            
+
         }
         else if (mode == "level1")
         {
@@ -197,7 +198,7 @@ void RemoveStick(string mode)
 
                 }
                 string deckenboden = new string('═', bodendecke + 1);
-                spieler = false; DrawPyramid(rows, deckenboden); menu("moves"); RemoveStick("level1");
+                spieler = false; DrawPyramid(rows, deckenboden); ShowTip(); menu("moves"); RemoveStick("level1");
             }
         }
 
@@ -250,10 +251,12 @@ void RemoveStick(string mode)
     }
     else
     {
+        Console.ForegroundColor = ConsoleColor.Yellow;
         if (spieler)
         {
 
             Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 1");
+            ShowTip();
             spieler = false;
             menu("moves");
         }
@@ -263,12 +266,13 @@ void RemoveStick(string mode)
             {
                 Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 2");
                 spieler = true;
-                
+
             }
             else
             {
                 Console.WriteLine(new string(' ', bodendecke - 4) + "Spieler 2");
                 spieler = true;
+                ShowTip();
                 menu("moves");
             }
         }
@@ -283,6 +287,27 @@ void RemoveStick(string mode)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ShowTip()
+{
+    remainingSticks3 = 0;
+
+    foreach (var row in pyramidState)
+    {
+        remainingSticks3 += row.Count(stick => stick);
+    }
+
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    if (remainingSticks3 < 5 && remainingSticks3 != 0)
+    {
+        Console.WriteLine($"{new string(' ', bodendecke / 2 - 1)} Tipp: mache {remainingSticks3 - 1} Züge");
+    }
+    else
+    {
+        Console.WriteLine($"{new string(' ', bodendecke / 2 - 1)} Tipp: mache 3 Züge");
+    }
+}
+
 
 void Check4Win()
 {
