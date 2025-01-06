@@ -356,10 +356,10 @@ string menu(string method)
             Console.Write("║\n               ╚════════╦═══════╝\n                     ╔══╩══╗\n                     ╠═►   ║\n                     ╚═════╝");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.SetCursorPosition(25, Console.CursorTop - 1);
-           
+            int abc = 0;
             try
             {
-                int abc = int.Parse(Console.ReadLine());
+                abc = int.Parse(Console.ReadLine());
             }
             catch
             {
