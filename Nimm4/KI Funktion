@@ -1,0 +1,27 @@
+ //KI
+ if (mode == "level2")
+ {
+     if (remainingSticks < 5 && remainingSticks != 0)
+     {
+         while (remainingSticks != 1)
+         {
+             try
+             {
+                 rndout = rnd.Next(1, rows + 1);
+                 rndoutt = rnd.Next(1, pyramidState[^1].Count + 1);
+
+                 if (pyramidState[rndout][rndoutt] == true)
+                 {
+                     pyramidState[rndout][rndoutt] = false;
+                     remainingSticks--;
+                 }
+             }
+             catch
+             {
+
+             }
+         }
+         spieler = !spieler; //zu beenden / spielerwechsel
+         continue;
+     }
+ }
